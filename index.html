@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Flow | Dra. Teresa Ros Álvarez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--navy:#0B1929;--navy-mid:#0F2236;--navy-light:#14304D;--navy-card:#162D4A;--accent:#5EEBC2;--accent-dim:#3CC49E;--alert:#D9534F;--warning:#E8A820;--success:#3DAD6C;--text-dark:#1C2D3F;--gray-1:#728698;--gray-2:#9AABBD;--gray-3:#C4CFDD;--gray-4:#3D5066;--page-bg:#FFFFFF;--section-alt:#F6F8FB}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--page-bg);color:var(--text-dark);line-height:1.6;font-size:16px}
+nav{position:sticky;top:0;z-index:100;background:var(--navy);border-bottom:1px solid rgba(94,235,194,.15);padding:0 24px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-brand{color:var(--accent);font-weight:700;font-size:14px;letter-spacing:.5px}
+.nav-links{display:flex;gap:20px;list-style:none}
+.nav-links a{color:var(--gray-3);font-size:13px;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-print{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:6px 14px;border-radius:6px;font-size:12px;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s}
+.nav-print:hover{background:var(--accent);color:var(--navy)}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#0A2240 100%) !important;padding:80px 24px 72px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-120px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(94,235,194,.07) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+.hero-tagline{font-size:clamp(14px,1.5vw,16px);color:var(--gray-2);font-weight:300;margin-bottom:32px;max-width:680px;line-height:1.8}
+.hero-title{font-size:clamp(38px,5.5vw,58px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-1.5px;margin-bottom:10px;text-transform:uppercase}
+.hero-title span{color:var(--accent)}
+.hero-subtitle{font-size:clamp(18px,2.5vw,26px);color:var(--gray-3);font-weight:300;margin-bottom:8px}
+.hero-subtitle em{font-family:'Newsreader',serif;font-style:italic;color:var(--accent);font-size:1.05em}
+.hero-insight{background:rgba(94,235,194,.08);border-left:3px solid var(--accent);padding:16px 20px;border-radius:0 8px 8px 0;margin:28px 0;max-width:700px}
+.hero-insight p{color:var(--gray-3);font-size:15px;line-height:1.75}
+.hero-insight strong{color:#fff}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.meta-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--gray-2);padding:5px 12px;border-radius:20px;font-size:12px}
+.hero-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start}
+.score-block{text-align:center;min-width:200px}
+.score-label{color:var(--gray-2);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.score-big{font-size:clamp(80px,11vw,104px);font-weight:800;line-height:1;color:var(--warning)}
+.score-big span{font-size:clamp(30px,4vw,44px);color:var(--gray-1);font-weight:400}
+.score-sub{color:var(--gray-2);font-size:12px;margin-top:8px;line-height:1.5}
+.hero-facts{display:flex;flex-direction:column;gap:12px}
+.fact-row{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px}
+.fact-icon{font-size:22px;flex-shrink:0}
+.fact-text{color:var(--gray-3);font-size:13.5px;line-height:1.4}
+.fact-text strong{color:#fff;display:block;font-size:14.5px;margin-bottom:2px}
+.hero-date{color:var(--gray-1);font-size:11px;margin-top:36px;line-height:1.6}
+section{padding:72px 24px}
+section:nth-child(even){background:var(--section-alt)}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.section-title{font-size:clamp(22px,3vw,34px);font-weight:700;color:var(--text-dark);margin-bottom:16px;line-height:1.2}
+.section-title em{font-family:'Newsreader',serif;font-style:italic}
+.section-desc{color:#4A6076;font-size:16px;max-width:700px;margin-bottom:40px;line-height:1.75}
+.verdict-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.chart-box{background:#fff;border:1px solid #E8EFF7;border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(11,25,41,.06)}
+.chart-box h3{font-size:13px;font-weight:600;color:var(--gray-4);text-align:center;margin-bottom:24px;text-transform:uppercase;letter-spacing:.5px}
+.gaps-list{display:flex;flex-direction:column;gap:18px}
+.gap-card{background:var(--navy);border-radius:12px;padding:0;display:flex;overflow:hidden}
+.gap-bar{width:5px;flex-shrink:0}
+.gap-bar.red{background:var(--alert)}
+.gap-bar.amber{background:var(--warning)}
+.gap-body{padding:20px 22px;flex:1}
+.gap-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.gap-label.red{color:var(--alert)}
+.gap-label.amber{color:var(--warning)}
+.gap-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:7px}
+.gap-desc{font-size:13px;color:var(--gray-2);line-height:1.6}
+.opportunity-box{margin-top:22px;background:rgba(94,235,194,.07);border:1px solid rgba(94,235,194,.2);border-radius:12px;padding:20px 24px}
+.opportunity-box p{color:var(--gray-4);font-size:14px;line-height:1.75}
+.ai-section{background:var(--navy) !important;padding:80px 24px}
+.ai-section .section-tag{color:var(--accent)}
+.ai-section .section-title{color:#fff}
+.ai-section .section-desc{color:var(--gray-2)}
+.ai-scenario{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 32px;margin-bottom:40px;max-width:760px}
+.ai-scenario p{color:var(--gray-3);font-size:15px;line-height:1.85}
+.ai-scenario strong{color:#fff}
+.ai-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px}
+.ai-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:26px;text-align:center}
+.ai-step-icon{font-size:34px;margin-bottom:14px}
+.ai-step-title{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.ai-step-text{font-size:13px;color:var(--gray-2);line-height:1.55}
+.dr-rank-box{background:linear-gradient(135deg,rgba(94,235,194,.08),rgba(94,235,194,.03));border:2px solid rgba(94,235,194,.3);border-radius:16px;padding:36px;text-align:center;max-width:560px;margin:0 auto}
+.dr-rank-box h3{color:#fff;font-size:22px;font-weight:700;margin-bottom:10px}
+.dr-rank-box p{color:var(--gray-2);font-size:14px;margin-bottom:20px;line-height:1.65}
+.dr-rank-price{color:var(--accent);font-size:30px;font-weight:800;margin-bottom:22px}
+.btn-accent{display:inline-block;background:var(--accent);color:var(--navy);padding:13px 30px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+.stat-card{background:#fff;border:1px solid #E8EFF7;border-radius:16px;padding:30px;box-shadow:0 2px 12px rgba(11,25,41,.05)}
+.stat-number{font-size:clamp(36px,4.5vw,52px);font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1}
+.stat-number span{color:var(--accent);font-size:.62em}
+.stat-text{font-size:14px;color:var(--gray-4);line-height:1.6}
+.stat-source{font-size:11px;color:var(--gray-2);margin-top:10px;line-height:1.5}
+.proof-box{background:var(--navy);border-radius:16px;padding:36px;margin:40px 0;max-width:760px}
+.proof-box p{color:var(--gray-2);font-size:15px;line-height:1.85}
+.proof-box strong{color:var(--accent)}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.road-card{background:var(--navy);border-radius:16px;overflow:hidden}
+.road-header{padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+.road-phase{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:7px}
+.road-phase.p1{color:var(--accent)}
+.road-phase.p2{color:var(--warning)}
+.road-phase.p3{color:var(--success)}
+.road-title{font-size:18px;font-weight:700;color:#fff}
+.road-body{padding:22px 24px}
+.road-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+.road-bullet{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.road-bullet.p1{background:var(--accent)}
+.road-bullet.p2{background:var(--warning)}
+.road-bullet.p3{background:var(--success)}
+.road-item-text{font-size:13px;color:var(--gray-2);line-height:1.6}
+.cta-section{background:var(--navy);padding:80px 24px}
+.cta-main{text-align:center}
+.cta-main h2{font-size:clamp(24px,3.5vw,40px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2}
+.cta-main p{color:var(--gray-2);font-size:16px;margin-bottom:30px;line-height:1.6}
+.btn-big{display:inline-block;background:var(--accent);color:var(--navy);padding:18px 44px;border-radius:10px;font-weight:800;font-size:17px;text-decoration:none;transition:all .2s;letter-spacing:.3px}
+.btn-big:hover{background:var(--accent-dim);transform:translateY(-2px);box-shadow:0 10px 40px rgba(94,235,194,.3)}
+footer{background:#060D17;padding:44px 24px;text-align:center}
+.footer-inner{max-width:1080px;margin:0 auto}
+.footer-logo{color:var(--accent);font-weight:800;font-size:22px;margin-bottom:5px}
+.footer-name{color:#fff;font-size:16px;font-weight:600;margin-bottom:3px}
+.footer-role{color:var(--gray-1);font-size:13px;margin-bottom:18px}
+.footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:18px}
+.footer-links a{color:var(--gray-2);font-size:13px;text-decoration:none}
+.footer-copy{color:var(--gray-1);font-size:11px;line-height:1.6}
+@media(max-width:900px){
+  .hero-grid,.verdict-grid,.ai-steps,.roadmap-grid,.stats-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+@media print{nav{position:relative}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">FLOW Results · Diagnóstico Digital</div>
+    <ul class="nav-links">
+      <li><a href="#veredicto">Veredicto</a></li>
+      <li><a href="#ia">IA</a></li>
+      <li><a href="#mercado">Mercado</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#cta">Siguiente Paso</a></li>
+    </ul>
+    <button class="nav-print" onclick="window.print()">Imprimir PDF</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-tagline">Las mejores clínicas merecen ser encontradas en internet. Este reporte revela exactamente qué está frenando su visibilidad digital y cómo convertirse en la referencia #1 de su especialidad.</p>
+    <h1 class="hero-title">Diagnóstico de<br>Visibilidad <span>Digital</span></h1>
+    <p class="hero-subtitle">Dra. Teresa Ros Álvarez — <em>Oftalmóloga</em></p>
+    <div class="hero-insight">
+      <p><strong>Los pacientes que consideran LASIK o cirugía de cataratas comparan extensamente en línea. Las oftalmólogas con mejor presencia digital capturan esa decisión.</strong> Los procedimientos oftalmológicos electivos tienen uno de los mayores valores de vida de paciente. Una mejor presencia digital tiene un ROI enorme en esta especialidad.</p>
+    </div>
+    <div class="hero-meta">
+      <span class="meta-chip">🏥 Oftalmóloga</span>
+      <span class="meta-chip">📍 San José</span>
+      <span class="meta-chip">🏨 Centro Médico Santa Teresa</span>
+    </div>
+    <div class="hero-grid">
+      <div class="score-block">
+        <div class="score-label">Índice de Visibilidad Digital</div>
+        <div class="score-big">2.0<span> / 5.0</span></div>
+        <div class="score-sub">Potencial alto de mejora<br>detectadas en su práctica</div>
+      </div>
+      <div class="hero-facts">
+        
+        <div class="fact-row">
+          <span class="fact-icon">⭐</span>
+          <div class="fact-text">
+            <strong>5 reseñas · 4.9 en Huli Health</strong>
+            Potencial de crecimiento alto en plataformas de reseñas.
+          </div>
+        </div>
+        <div class="fact-row">
+          <span class="fact-icon">📱</span>
+          <div class="fact-text">
+            <strong>Sin Instagram o redes sociales propias detectadas</strong>
+            Los colegas con redes activas capturan pacientes que buscan confianza antes de agendar.
+          </div>
+        </div>
+    <div class="fact-row">
+      <span class="fact-icon">🤖</span>
+      <div class="fact-text">
+        <strong>Visibilidad en IA: baja</strong>
+        ChatGPT y Perplexity no la mencionan al consultar por especialistas privados en CR.
+      </div>
+    </div>
+    <div class="fact-row">
+      <span class="fact-icon">📍</span>
+      <div class="fact-text">
+        <strong>Google Business Profile: no reclamado</strong>
+        Los pacientes que buscan en Google Maps no encuentran su perfil verificado.
+      </div>
+    </div>
+      </div>
+    </div>
+    <p class="hero-date">Preparado por FLOW Results · 2026-05-27 · Fuentes: Huli Health, Google Search, directorios hospitalarios CR · Datos observacionales de fuentes abiertas</p>
+  </div>
+</section>
+
+<section id="veredicto">
+  <div class="section-inner">
+    <div class="section-tag">Veredicto Ejecutivo</div>
+    <h2 class="section-title">Las brechas que frenan su crecimiento <em>digital</em></h2>
+    <p class="section-desc">Su reputación clínica es sólida. El problema no es la calidad de su práctica — es que los pacientes correctos no la están encontrando primero cuando investigan en línea.</p>
+    <div class="verdict-grid">
+      <div class="chart-box">
+        <h3>Visibilidad Digital: Álvarez vs. Promedio mercado CR</h3>
+        <canvas id="radarChart" width="380" height="380"></canvas>
+      </div>
+      <div>
+        <div class="gaps-list">
+          
+          <div class="gap-card">
+            <div class="gap-bar red"></div>
+            <div class="gap-body">
+              <div class="gap-label red">Brecha Crítica — Prioridad 1</div>
+              <div class="gap-title">Sin Google Business Profile verificado</div>
+              <div class="gap-desc">Los pacientes que buscan 'Oftalmóloga' en Google Maps no encuentran su perfil individual. Los médicos sin GBP activo son prácticamente invisibles para el 40% de las búsquedas locales de salud.</div>
+            </div>
+          </div>
+          <div class="gap-card">
+            <div class="gap-bar amber"></div>
+            <div class="gap-body">
+              <div class="gap-label amber">Brecha Importante — Prioridad 2</div>
+              <div class="gap-title">Volumen de reseñas insuficiente</div>
+              <div class="gap-desc">Con 5 reseñas en Huli y 0 en Google, su reputación digital no refleja su nivel clínico. El 76% de los pacientes elige médico basándose en reseñas. Esto es la brecha más impactante que puede cerrar.</div>
+            </div>
+          </div>
+        </div>
+        <div class="opportunity-box">
+          <p>Cerrar estas brechas podría representar <strong>10–20 consultas adicionales por mes</strong>, basándose en benchmarks de médicos especialistas con perfil digital activo en mercados privados similares de América Latina.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ai-section" id="ia">
+  <div class="section-inner">
+    <div class="section-tag">Visibilidad en Inteligencia Artificial</div>
+    <h2 class="section-title">¿Le gustaría que la IA la recomiende de primero?</h2>
+    <p class="section-desc">Hoy, miles de pacientes en Costa Rica abren ChatGPT o Perplexity en lugar de buscar en Google. La médica que aparece ahí gana al paciente antes de que llamen a ninguna clínica.</p>
+    <div class="ai-scenario">
+      <p>Un paciente abre ChatGPT y pregunta: <strong>"¿Cuál es la mejor oftalmóloga para LASIK en Costa Rica?"</strong> La IA responde con médicos que tienen más señales digitales indexadas. <strong>¿Aparece usted en esa respuesta?</strong></p>
+    </div>
+    <div class="ai-steps">
+      <div class="ai-step">
+        <div class="ai-step-icon">🔍</div>
+        <div class="ai-step-title">1. El Paciente Consulta</div>
+        <div class="ai-step-text">Pregunta a ChatGPT, Perplexity o Google AI Overview cuál especialista elegir</div>
+      </div>
+      <div class="ai-step">
+        <div class="ai-step-icon">🧠</div>
+        <div class="ai-step-title">2. La IA Busca Señales</div>
+        <div class="ai-step-text">Analiza reseñas verificadas, directorios, schema markup médico y menciones de autoridad</div>
+      </div>
+      <div class="ai-step">
+        <div class="ai-step-icon">✅</div>
+        <div class="ai-step-title">3. Recomienda al Mejor Posicionado</div>
+        <div class="ai-step-text">El médico con más señales digitales estructuradas aparece de primero — no necesariamente el más hábil</div>
+      </div>
+    </div>
+    <div class="dr-rank-box">
+      <h3>Doctor Rank · Posicionamiento en IA</h3>
+      <p>Sistema especializado que construye las señales que ChatGPT, Perplexity y Google AI Overviews necesitan para recomendarle de primero: schema markup médico, optimización de contenido para LLMs y estrategia de autoridad.</p>
+      <div class="dr-rank-price">Desde $297 USD / mes</div>
+      <a href="https://doctorrank.clinic" target="_blank" class="btn-accent">Conocer Doctor Rank →</a>
+    </div>
+  </div>
+</section>
+
+<section id="mercado">
+  <div class="section-inner">
+    <div class="section-tag">Contexto de Mercado</div>
+    <h2 class="section-title">Así elige un paciente a su médico <em>hoy</em></h2>
+    <p class="section-desc">El comportamiento del paciente privado en Costa Rica ha cambiado. Antes llegaba únicamente por referido. Hoy investiga en línea, compara reseñas y elige antes de llamar.</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">81<span>%</span></div>
+        <div class="stat-text">de los pacientes busca información sobre médicos en internet antes de agendar su primera cita con un especialista privado.</div>
+        <div class="stat-source">Fuente: Think with Google, "The Digital Journey to Health and Wellness", 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">76<span>%</span></div>
+        <div class="stat-text">de los pacientes en América Latina considera las reseñas online tan confiables como una recomendación personal de un familiar o amigo.</div>
+        <div class="stat-source">Fuente: BrightLocal Local Consumer Review Survey, 2024</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3<span>×</span></div>
+        <div class="stat-text">más probabilidad de que un paciente elija a un médico que responde públicamente a sus reseñas versus uno que no lo hace.</div>
+        <div class="stat-source">Fuente: Huli Health Blog, "La importancia de responder reseñas médicas", 2024</div>
+      </div>
+    </div>
+    <div class="proof-box">
+      <p><strong>Resultado real de un cliente Flow Results:</strong> Una oftalmóloga en Costa Rica con quien trabajamos aumentó sus cirugías de LASIK de 3 a 9 por mes en 4 meses. La clave fue aparecer cuando los pacientes comparan opciones en línea.</p>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap" style="background:var(--section-alt)">
+  <div class="section-inner">
+    <div class="section-tag">Plan de Acción</div>
+    <h2 class="section-title">Roadmap de 12 meses: de invisible <em>a referente</em></h2>
+    <p class="section-desc">Tres fases progresivas para construir la presencia digital que la posicione como ser la oftalmóloga de referencia para procedimientos refractivos en Costa Rica.</p>
+    <div class="roadmap-grid">
+      <div class="road-card">
+        <div class="road-header">
+          <div class="road-phase p1">Fase 1 · Días 1–30</div>
+          <div class="road-title">Fundación Digital</div>
+        </div>
+        <div class="road-body">
+          <div class="road-item"><div class="road-bullet p1"></div><div class="road-item-text">Crear y verificar Google Business Profile individual con fotos profesionales y horarios</div></div>
+          <div class="road-item"><div class="road-bullet p1"></div><div class="road-item-text">Auditar y unificar información (NAP) en todos los directorios médicos activos en CR</div></div>
+          <div class="road-item"><div class="road-bullet p1"></div><div class="road-item-text">Crear cuenta Instagram con bio profesional y primeros 3 posts educativos</div></div>
+          <div class="road-item"><div class="road-bullet p1"></div><div class="road-item-text">Activar flujo automático de solicitud de reseñas vía WhatsApp post-consulta</div></div>
+          <div class="road-item"><div class="road-bullet p1"></div><div class="road-item-text">Agregar botón WhatsApp flotante y optimizar página de conversión en el sitio actual</div></div>
+        </div>
+      </div>
+      <div class="road-card">
+        <div class="road-header">
+          <div class="road-phase p2">Fase 2 · Días 31–90</div>
+          <div class="road-title">Construcción de Autoridad</div>
+        </div>
+        <div class="road-body">
+          <div class="road-item"><div class="road-bullet p2"></div><div class="road-item-text">Publicar 2 artículos SEO por mes sobre procedimientos frecuentes en oftalmóloga</div></div>
+          <div class="road-item"><div class="road-bullet p2"></div><div class="road-item-text">Implementar schema markup "Physician" + "MedicalSpecialty" en todos los sitios</div></div>
+          <div class="road-item"><div class="road-bullet p2"></div><div class="road-item-text">Lanzar serie de Reels educativos en Instagram (4/mes): condición + síntoma + cuándo consultar</div></div>
+          <div class="road-item"><div class="road-bullet p2"></div><div class="road-item-text">Optimizar perfil de Huli Health: fotos clínicas, descripción enriquecida, todos los procedimientos marcados</div></div>
+          <div class="road-item"><div class="road-bullet p2"></div><div class="road-item-text">Meta: 30+ reseñas nuevas en Google y alcanzar posición top 3 en Maps de su zona</div></div>
+        </div>
+      </div>
+      <div class="road-card">
+        <div class="road-header">
+          <div class="road-phase p3">Fase 3 · Meses 4–12</div>
+          <div class="road-title">Escala y Dominio</div>
+        </div>
+        <div class="road-body">
+          <div class="road-item"><div class="road-bullet p3"></div><div class="road-item-text">Implementar Doctor Rank para posicionamiento en ChatGPT, Perplexity y Google AI Overviews</div></div>
+          <div class="road-item"><div class="road-bullet p3"></div><div class="road-item-text">Campaña Google Ads local para sus procedimientos de mayor valor</div></div>
+          <div class="road-item"><div class="road-bullet p3"></div><div class="road-item-text">1–2 menciones en medios costarricenses (La Nación Salud, CRHoy, podcast de salud)</div></div>
+          <div class="road-item"><div class="road-bullet p3"></div><div class="road-item-text">Canal YouTube con casos educativos mensuales en formato divulgativo</div></div>
+          <div class="road-item"><div class="road-bullet p3"></div><div class="road-item-text">Sistema de referido digital médico-a-médico en su especialidad</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="section-inner">
+    <div class="section-tag" style="text-align:center;margin-bottom:10px">Siguiente Paso</div>
+    <div class="cta-main">
+      <h2>¿Lista para ser la referente<br>de oftalmóloga en San José?</h2>
+      <p>15 minutos de conversación pueden cambiar cuántos pacientes la encuentran este mes.<br>Sin compromiso. Solo estrategia.</p>
+      <a href="https://calendly.com/recheverria-flow/sesion-de-estrategia-con-flow-results-clone" target="_blank" class="btn-big">Agendar sesión de estrategia →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">FLOW Results</div>
+    <div class="footer-name">Roberto Echeverría</div>
+    <div class="footer-role">CEO · FLOW Results</div>
+    <div class="footer-links">
+      <a href="tel:+50671207442">+506 7120 7442</a>
+      <a href="mailto:recheverria@flowresults.com">recheverria@flowresults.com</a>
+      <a href="https://flowresults.com" target="_blank">flowresults.com</a>
+      <a href="https://calendly.com/recheverria-flow/sesion-de-estrategia-con-flow-results-clone" target="_blank">Agendar reunión</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 FLOW Results · Diagnóstico preparado con base en datos públicos: Huli Health, Google Search, directorios hospitalarios CR · 2026-05-27<br>
+      Este diagnóstico es indicativo con fines comerciales. Las cifras son estimaciones basadas en búsqueda pública. No constituye garantía de resultados.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Reseñas', 'Sitio Web', 'Social Media', 'Directorios', 'Google Maps', 'IA Readiness'],
+      datasets: [
+        {
+          label: 'Dra. Álvarez',
+          data: [12.5, 15.0, 5.0, 12.5, 0.5, 2.5],
+          backgroundColor: 'rgba(94,235,194,0.15)',
+          borderColor: '#5EEBC2',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#5EEBC2',
+          pointBorderColor: '#fff',
+          pointRadius: 5
+        },
+        {
+          label: 'Promedio mercado CR',
+          data: [5.0, 5.0, 5.0, 5.0, 1.7, 3.7],
+          backgroundColor: 'rgba(154,171,189,0.08)',
+          borderColor: '#9AABBD',
+          borderWidth: 2,
+          borderDash: [6,4],
+          pointBackgroundColor: '#9AABBD',
+          pointBorderColor: '#fff',
+          pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#4A6076', font: { family: 'Outfit', size: 12 }, padding: 20, usePointStyle: true } },
+        tooltip: { callbacks: { label: function(c){ return ' ' + c.dataset.label + ': ' + c.raw + ' / 5.0'; } } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 5,
+          ticks: { stepSize: 1, color: '#9AABBD', font: { size: 10 }, backdropColor: 'transparent' },
+          grid: { color: 'rgba(0,0,0,0.07)' },
+          angleLines: { color: 'rgba(0,0,0,0.08)' },
+          pointLabels: { color: '#3D5066', font: { family: 'Outfit', size: 12, weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
